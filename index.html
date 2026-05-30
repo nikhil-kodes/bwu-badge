@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Internship Expo 2026 - Badge Creator</title>
+		<link
+			href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"
+			rel="stylesheet" />
+		<style>
+			:root {
+				--dark: #020010;
+				--cream: #fff0e0; /* Warm cream/peach template accent color */
+				--cyan: #fff0e0; /* Repurposed to cream accent */
+				--glass-bg: rgba(
+					255,
+					255,
+					255,
+					0
+				); /* Slate dark blue-grey matching template */
+				--glass-border: rgba(
+					255,
+					240,
+					224,
+					0.22
+				); /* Cream border matching template */
+				--neon-purple: #c0c0d0; /* Repurposed to silver template color */
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: "General Sans", sans-serif;
+				background-color: #000000;
+				color: #ffffff;
+				overflow-x: hidden;
+				min-height: 100vh;
+			}
+
+			/* Video Background */
+			#bg-video {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: top center;
+				z-index: -3;
+			}
+
+			.video-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background: radial-gradient(
+					circle at center,
+					rgba(2, 0, 16, 0.4) 0%,
+					rgba(0, 0, 0, 0.8) 100%
+				);
+				z-index: -2;
+				pointer-events: none;
+			}
+
+			/* Floating Decorative Elements */
+			.floating-elements-container {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: -1;
+				overflow: hidden;
+			}
+
+			.parallax-wrap {
+				transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				will-change: transform;
+			}
+
+			.float-item {
+				display: block;
+				opacity: 0.55;
+				filter: drop-shadow(0 0 15px rgba(255, 240, 224, 0.2));
+			}
+
+			/* Floating Animations */
+			@keyframes float-gentle {
+				0% {
+					transform: translateY(0px) rotate(0deg);
+				}
+				50% {
+					transform: translateY(-20px) rotate(4deg);
+				}
+				100% {
+					transform: translateY(0px) rotate(0deg);
+				}
+			}
+
+			@keyframes float-opposing {
+				0% {
+					transform: translateY(0px) rotate(0deg);
+				}
+				50% {
+					transform: translateY(20px) rotate(-4deg);
+				}
+				100% {
+					transform: translateY(0px) rotate(0deg);
+				}
+			}
+
+			.planet-1 {
+				width: 240px;
+				animation: float-gentle 18s ease-in-out infinite;
+				filter: blur(1.5px) drop-shadow(0 0 25px rgba(138, 43, 226, 0.25));
+				opacity: 0.65;
+			}
+
+			.controller-1 {
+				width: 130px;
+				animation: float-opposing 10s ease-in-out infinite;
+				filter: drop-shadow(0 0 12px rgba(255, 240, 224, 0.25));
+			}
+
+			.big-controller-1 {
+				width: 220px;
+				animation: float-gentle 14s ease-in-out infinite;
+				filter: blur(2.5px) drop-shadow(0 0 12px rgba(255, 240, 224, 0.25)); /* Background depth */
+				opacity: 0.35;
+			}
+
+			.atom-1 {
+				width: 110px;
+				animation: float-gentle 12s ease-in-out infinite;
+				filter: drop-shadow(0 0 18px rgba(255, 240, 224, 0.35));
+			}
+
+			.star-straight-1 {
+				width: 32px;
+				animation: float-gentle 7s ease-in-out infinite;
+				opacity: 0.75;
+			}
+
+			.star-straight-2 {
+				width: 42px;
+				animation: float-opposing 8s ease-in-out infinite;
+				opacity: 0.7;
+			}
+
+			.star-tilted-1 {
+				width: 38px;
+				animation: float-opposing 6s ease-in-out infinite;
+				opacity: 0.75;
+			}
+
+			.star-tilted-2 {
+				width: 28px;
+				animation: float-gentle 10s ease-in-out infinite;
+				opacity: 0.55;
+			}
+
+			/* Navbar */
+			.navbar {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 20px 60px;
+				width: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 10;
+			}
+
+			.nav-logo img {
+				height: 120px;
+				object-fit: contain;
+				filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+			}
+
+			.btn-pill-wrapper {
+				padding: 1px;
+				background: linear-gradient(90deg, var(--cyan), var(--neon-purple));
+				border-radius: 9999px;
+				display: inline-flex;
+			}
+
+			.btn-nav-pill {
+				background: #020010;
+				color: white;
+				border-radius: 9999px;
+				padding: 10px 26px;
+				font-size: 14px;
+				font-weight: 600;
+				border: none;
+				position: relative;
+				overflow: hidden;
+				cursor: pointer;
+				text-decoration: none;
+				transition: background 0.3s;
+				letter-spacing: 0.5px;
+			}
+
+			.btn-nav-pill:hover {
+				background: rgba(2, 0, 16, 0.85);
+			}
+
+			.glow-streak {
+				position: absolute;
+				top: 0;
+				left: 10%;
+				width: 80%;
+				height: 6px;
+				background: radial-gradient(
+					ellipse at center,
+					rgba(255, 255, 255, 0.8),
+					transparent
+				);
+				filter: blur(2px);
+			}
+
+			/* Hero */
+			.hero {
+				position: relative;
+				min-height: 100vh;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 120px 20px 60px;
+				margin-top: 50px;
+				z-index: 1;
+			}
+
+			/* Badge Creator Section */
+			.glass-card {
+				background: transparent;
+				border: 1px solid var(--glass-border);
+				border-radius: 24px;
+				padding: 36px;
+				backdrop-filter: blur(1px) saturate(100%);
+				-webkit-backdrop-filter: blur(1px) saturate(100%);
+				box-shadow:
+					0 20px 50px rgba(0, 0, 0, 0.5),
+					inset 0 0 20px rgba(255, 240, 224, 0.03);
+				display: flex;
+				gap: 40px;
+				max-width: 980px;
+				width: 100%;
+				margin: 0 auto;
+				transition: border-color 0.3s ease;
+			}
+
+			/* .glass-card:hover {
+				border-color: rgba(255, 240, 224, 0.11);
+			} */
+
+			.canvas-preview {
+				flex: 0 0 280px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			#badge-canvas {
+				width: 100%;
+				max-width: 280px;
+				border-radius: 16px;
+				box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+				background: #020010;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+			}
+
+			.controls {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 24px;
+			}
+
+			.control-group {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+			}
+
+			.control-group label {
+				font-size: 11px;
+				font-weight: 700;
+				letter-spacing: 1.5px;
+				text-transform: uppercase;
+				color: var(--cream);
+				text-shadow: 0 0 8px rgba(255, 240, 224, 0.25);
+			}
+
+			.upload-zone {
+				border: 1.5px dashed rgba(255, 240, 224, 0.3);
+				padding: 30px;
+				text-align: center;
+				border-radius: 12px;
+				cursor: pointer;
+				background: rgba(255, 255, 255, 0.02);
+				transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 12px;
+				color: rgba(255, 240, 224, 0.75);
+				font-size: 14px;
+			}
+
+			.upload-zone:hover,
+			.upload-zone.dragover {
+				border-style: solid;
+				border-color: var(--cyan);
+				background: rgba(255, 240, 224, 0.05);
+				color: #ffffff;
+				box-shadow: 0 0 20px rgba(255, 240, 224, 0.15);
+			}
+
+			input[type="file"] {
+				display: none;
+			}
+
+			input[type="text"] {
+				background: rgba(255, 255, 255, 0.05);
+				border: 1px solid rgba(255, 255, 255, 0.12);
+				border-radius: 8px;
+				padding: 12px 16px;
+				color: white;
+				font-size: 14px;
+				font-family: inherit;
+				width: 100%;
+				transition: all 0.3s;
+			}
+
+			input[type="text"]:focus {
+				outline: none;
+				border-color: var(--cyan);
+				background: rgba(255, 255, 255, 0.08);
+				box-shadow: 0 0 10px rgba(255, 240, 224, 0.25);
+			}
+
+			/* Range Sliders Styling */
+			input[type="range"] {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 100%;
+				height: 6px;
+				border-radius: 3px;
+				background: rgba(255, 255, 255, 0.1);
+				outline: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			input[type="range"]::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				background: var(--cyan);
+				cursor: pointer;
+				box-shadow: 0 0 8px var(--cyan);
+				transition: transform 0.1s;
+			}
+
+			input[type="range"]::-webkit-slider-thumb:hover {
+				transform: scale(1.25);
+			}
+
+			.color-swatches {
+				display: flex;
+				gap: 12px;
+			}
+
+			.swatch {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				cursor: pointer;
+				border: 2px solid transparent;
+				transition:
+					transform 0.2s,
+					border-color 0.2s;
+				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+			}
+
+			.swatch.active {
+				border-color: white;
+				transform: scale(1.2);
+				box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+			}
+
+			.actions {
+				display: flex;
+				gap: 16px;
+				margin-top: 10px;
+			}
+
+			.share-note {
+				color: rgba(255, 255, 255, 0.7);
+				font-size: 13px;
+				line-height: 1.5;
+				margin-top: 12px;
+			}
+
+			.btn-linkedin {
+				background: rgba(10, 102, 194, 0.1);
+				border: 1.5px solid rgba(10, 102, 194, 0.6);
+				color: white;
+				font-weight: 600;
+				padding: 14px 24px;
+				border-radius: 10px;
+				cursor: pointer;
+				font-family: inherit;
+				font-size: 14px;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			}
+
+			.btn-linkedin:hover {
+				background: rgba(10, 102, 194, 0.3);
+				border-color: #0a66c2;
+				transform: translateY(-3px);
+				box-shadow: 0 6px 20px rgba(10, 102, 194, 0.35);
+			}
+
+			.btn-linkedin:disabled {
+				opacity: 0.55;
+				cursor: not-allowed;
+				border-color: rgba(10, 102, 194, 0.25);
+				background: rgba(10, 102, 194, 0.05);
+				box-shadow: none;
+			}
+
+			/* Small sliders */
+			.slider-row {
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				margin-bottom: 18px;
+			}
+
+			.slider-row:last-child {
+				margin-bottom: 0;
+			}
+
+			.slider-row label {
+				width: 60px;
+				margin: 0;
+				color: rgba(255, 255, 255, 0.5);
+				font-size: 12px;
+				font-weight: 600;
+			}
+
+			@media (max-width: 900px) {
+				.navbar {
+					padding: 15px 30px;
+				}
+
+				.nav-logo img {
+					height: 50px;
+				}
+
+				.btn-nav-pill {
+					padding: 8px 18px;
+					font-size: 13px;
+				}
+
+				.glass-card {
+					flex-direction: column;
+					padding: 24px;
+					gap: 24px;
+				}
+
+				.canvas-preview {
+					max-width: 100%;
+					flex: auto;
+				}
+
+				.actions {
+					flex-direction: column;
+				}
+
+				.hero {
+					padding: 100px 15px 40px;
+				}
+			}
+
+			@media (max-width: 480px) {
+				.nav-logo img {
+					height: 40px;
+				}
+
+				#badge-canvas {
+					max-width: 250px;
+				}
+
+				.btn-linkedin {
+					font-size: 13px;
+					padding: 12px 16px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Video Background -->
+		<video
+			id="bg-video"
+			autoplay
+			loop
+			muted
+			playsinline
+			crossorigin="anonymous">
+			<source
+				src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_171521_25968ba2-b594-4b32-aab7-f6b69398a6fa.mp4"
+				type="video/mp4" />
+		</video>
+		<div class="video-overlay"></div>
+
+		<!-- Floating Interactive Background Elements -->
+		<div class="floating-elements-container">
+			<!-- Planet -->
+			<div
+				class="parallax-wrap speed-1"
+				style="position: absolute; top: -40px; right: -40px">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/planet.png"
+					class="float-item planet-1"
+					alt="Planet" />
+			</div>
+			<!-- Controller -->
+			<div
+				class="parallax-wrap speed-2"
+				style="position: absolute; bottom: 8%; left: 4%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Controller.png"
+					class="float-item controller-1"
+					alt="Controller" />
+			</div>
+			<!-- Controller 2 -->
+			<div
+				class="parallax-wrap speed-3"
+				style="position: absolute; top: 12%; left: -60px">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Controller.png"
+					class="float-item big-controller-1"
+					alt="Controller" />
+			</div>
+			<!-- Atom Structure -->
+			<div
+				class="parallax-wrap speed-2"
+				style="position: absolute; bottom: 22%; right: 6%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/atom%20structure.png"
+					class="float-item atom-1"
+					alt="Atom" />
+			</div>
+			<!-- Replicated Stars -->
+			<div
+				class="parallax-wrap speed-1"
+				style="position: absolute; top: 8%; left: 22%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Star%20straight.png"
+					class="float-item star-straight-1"
+					alt="Star" />
+			</div>
+			<div
+				class="parallax-wrap speed-3"
+				style="position: absolute; bottom: 12%; right: 28%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Star%20straight.png"
+					class="float-item star-straight-2"
+					alt="Star" />
+			</div>
+			<div
+				class="parallax-wrap speed-2"
+				style="position: absolute; top: 28%; right: 18%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Star%20tilted.png"
+					class="float-item star-tilted-1"
+					alt="Star" />
+			</div>
+			<div
+				class="parallax-wrap speed-1"
+				style="position: absolute; bottom: 35%; left: 16%">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/Star%20tilted.png"
+					class="float-item star-tilted-2"
+					alt="Star" />
+			</div>
+		</div>
+
+		<!-- Navbar -->
+		<nav class="navbar">
+			<div class="nav-logo">
+				<img
+					src="https://ik.imagekit.io/nikhilcodes/logo.png"
+					alt="Logo" />
+			</div>
+
+			<div class="btn-pill-wrapper">
+				<a
+					href="https://linktr.ee/internshipexpo26"
+					target="_blank"
+					class="btn-nav-pill">
+					<div class="glow-streak"></div>
+					Fill the Form
+				</a>
+			</div>
+		</nav>
+
+		<!-- Hero / Creator Section -->
+		<section class="hero">
+			<div class="glass-card">
+				<div class="canvas-preview">
+					<canvas
+						id="badge-canvas"
+						width="836"
+						height="1600"></canvas>
+				</div>
+
+				<div class="controls">
+					<div class="control-group">
+						<label>Upload Photo</label>
+						<div
+							class="upload-zone"
+							id="upload-zone">
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								style="color: var(--cyan); margin-bottom: 2px">
+								<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+								<polyline points="17 8 12 3 7 8"></polyline>
+								<line
+									x1="12"
+									y1="3"
+									x2="12"
+									y2="15"></line>
+							</svg>
+							Click or drag & drop a photo (JPG, PNG)
+							<input
+								type="file"
+								id="photo-upload"
+								accept="image/jpeg, image/png, image/webp" />
+						</div>
+					</div>
+
+					<div
+						class="control-group"
+						id="photo-adjustments"
+						style="display: none">
+						<label>Adjust Photo</label>
+						<div class="slider-row">
+							<label>Scale</label>
+							<input
+								type="range"
+								id="photo-scale"
+								min="0.5"
+								max="2.5"
+								step="0.05"
+								value="1" />
+						</div>
+						<div class="slider-row">
+							<label>Horiz</label>
+							<input
+								type="range"
+								id="photo-x"
+								min="-300"
+								max="300"
+								value="0" />
+						</div>
+						<div class="slider-row">
+							<label>Vert</label>
+							<input
+								type="range"
+								id="photo-y"
+								min="-300"
+								max="300"
+								value="0" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label>Your Name</label>
+						<input
+							type="text"
+							id="name-input"
+							placeholder="Enter your name..."
+							maxlength="36" />
+					</div>
+
+					<div class="control-group">
+						<label>Text Color</label>
+						<div
+							class="color-swatches"
+							id="color-swatches">
+							<div
+								class="swatch active"
+								style="background: #000000"
+								data-color="#000000"></div>
+							<div
+								class="swatch"
+								style="background: #00ffff"
+								data-color="#00FFFF"></div>
+							<div
+								class="swatch"
+								style="background: #ffd700"
+								data-color="#FFD700"></div>
+							<div
+								class="swatch"
+								style="background: #ff7f50"
+								data-color="#FF7F50"></div>
+							<div
+								class="swatch"
+								style="background: #32cd32"
+								data-color="#32CD32"></div>
+						</div>
+					</div>
+
+					<div class="actions">
+						<button
+							class="btn-linkedin"
+							id="btn-linkedin"
+							disabled>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="currentColor">
+								<path
+									d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+							</svg>
+							Share on LinkedIn
+						</button>
+					</div>
+				</div>
+				
+		</section>
+
+		<script>
+			// Parallax effects on mousemove
+			document.addEventListener("mousemove", (e) => {
+				const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+				const y =
+					(e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+				const wraps = document.querySelectorAll(".parallax-wrap");
+				wraps.forEach((wrap) => {
+					let speed = 20;
+					if (wrap.classList.contains("speed-1")) speed = 15;
+					if (wrap.classList.contains("speed-2")) speed = 30;
+					if (wrap.classList.contains("speed-3")) speed = 45;
+
+					const dx = x * speed;
+					const dy = y * speed;
+					wrap.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+				});
+			});
+
+			// Badge Creator Logic
+			const canvas = document.getElementById("badge-canvas");
+			const ctx = canvas.getContext("2d");
+
+			// Load background Template and foreground Overlay
+			const templateImg = new Image();
+			const overlayImg = new Image();
+			templateImg.crossOrigin = "anonymous";
+			overlayImg.crossOrigin = "anonymous";
+
+			let templateLoaded = false;
+			let overlayLoaded = false;
+
+			templateImg.onload = () => {
+				templateLoaded = true;
+				renderCanvas();
+			};
+			templateImg.onerror = (e) => {
+				console.error("Failed to load Template.png", e);
+			};
+
+			overlayImg.onload = () => {
+				overlayLoaded = true;
+				renderCanvas();
+			};
+			overlayImg.onerror = (e) => {
+				console.error("Failed to load overlay.png", e);
+			};
+
+			templateImg.src = "https://ik.imagekit.io/nikhilcodes/Template.png";
+			overlayImg.src = "https://ik.imagekit.io/nikhilcodes/overlay.png";
+
+			// Immediate check if already loaded from cache
+			if (templateImg.complete && templateImg.naturalWidth > 0) {
+				templateLoaded = true;
+			}
+			if (overlayImg.complete && overlayImg.naturalWidth > 0) {
+				overlayLoaded = true;
+			}
+
+			// State
+			let userPhoto = null;
+			let userName = "";
+			let nameColor = "#FFFFFF";
+
+			let photoScale = 1;
+			let photoOffsetX = 0;
+			let photoOffsetY = 0;
+
+			// DOM Elements
+			const nameInput = document.getElementById("name-input");
+			const uploadZone = document.getElementById("upload-zone");
+			const fileInput = document.getElementById("photo-upload");
+			const colorSwatches = document.querySelectorAll(".swatch");
+
+			const scaleSlider = document.getElementById("photo-scale");
+			const xSlider = document.getElementById("photo-x");
+			const ySlider = document.getElementById("photo-y");
+			const photoAdjustments = document.getElementById("photo-adjustments");
+			const btnLinkedin = document.getElementById("btn-linkedin");
+			const shareNote = document.getElementById("share-note");
+
+			nameInput.addEventListener("input", (e) => {
+				userName = e.target.value;
+				renderCanvas();
+			});
+
+			btnLinkedin.disabled = true;
+			btnLinkedin.setAttribute("aria-disabled", "true");
+
+			colorSwatches.forEach((swatch) => {
+				swatch.addEventListener("click", (e) => {
+					colorSwatches.forEach((s) => s.classList.remove("active"));
+					e.target.classList.add("active");
+					nameColor = e.target.dataset.color;
+					renderCanvas();
+				});
+			});
+
+			uploadZone.addEventListener("click", () => fileInput.click());
+			uploadZone.addEventListener("dragover", (e) => {
+				e.preventDefault();
+				uploadZone.classList.add("dragover");
+			});
+			uploadZone.addEventListener("dragleave", () =>
+				uploadZone.classList.remove("dragover"),
+			);
+			uploadZone.addEventListener("drop", (e) => {
+				e.preventDefault();
+				uploadZone.classList.remove("dragover");
+				if (e.dataTransfer.files.length) {
+					handleFile(e.dataTransfer.files[0]);
+				}
+			});
+			fileInput.addEventListener("change", (e) => {
+				if (e.target.files.length) {
+					handleFile(e.target.files[0]);
+				}
+			});
+
+			function handleFile(file) {
+				if (!file.type.startsWith("image/")) return;
+
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const img = new Image();
+					img.crossOrigin = "anonymous";
+					img.onload = () => {
+						userPhoto = img;
+						photoScale = 1;
+						photoOffsetX = 0;
+						photoOffsetY = 0;
+						scaleSlider.value = 1;
+						xSlider.value = 0;
+						ySlider.value = 0;
+						photoAdjustments.style.display = "block";
+						btnLinkedin.disabled = false;
+						btnLinkedin.removeAttribute("aria-disabled");
+						if (shareNote) {
+							shareNote.textContent =
+								"Your badge is ready to share on LinkedIn. It will download automatically when you click the button.";
+						}
+						renderCanvas();
+					};
+					img.src = e.target.result;
+				};
+				reader.readAsDataURL(file);
+			}
+
+			// Sliders
+			scaleSlider.addEventListener("input", (e) => {
+				photoScale = parseFloat(e.target.value);
+				renderCanvas();
+			});
+			xSlider.addEventListener("input", (e) => {
+				photoOffsetX = parseFloat(e.target.value);
+				renderCanvas();
+			});
+			ySlider.addEventListener("input", (e) => {
+				photoOffsetY = parseFloat(e.target.value);
+				renderCanvas();
+			});
+
+			// Render font when loaded to avoid default fallback rendering
+			document.fonts.ready.then(() => {
+				renderCanvas();
+			});
+
+			function renderCanvas() {
+				// Clear canvas with black background
+				ctx.fillStyle = "#020010";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				// 1. Draw Template (Background)
+				if (templateLoaded) {
+					ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+				}
+
+				// 2. Draw User Photo (Clipped and Scaled)
+				if (userPhoto) {
+					// Photo zone settings (canvas coordinates: matching original 836x1600 aspect ratio box)
+					const zX = 183,
+						zY = 417,
+						zW = 495,
+						zH = 690,
+						radius = 35;
+
+					ctx.save();
+
+					// Create rounded clipping path covering exactly the 'INSERT PICTURE HERE' box
+					ctx.beginPath();
+					ctx.moveTo(zX + radius, zY);
+					ctx.lineTo(zX + zW - radius, zY);
+					ctx.quadraticCurveTo(zX + zW, zY, zX + zW, zY + radius);
+					ctx.lineTo(zX + zW, zY + zH - radius);
+					ctx.quadraticCurveTo(zX + zW, zY + zH, zX + zW - radius, zY + zH);
+					ctx.lineTo(zX + radius, zY + zH);
+					ctx.quadraticCurveTo(zX, zY + zH, zX, zY + zH - radius);
+					ctx.lineTo(zX, zY + radius);
+					ctx.quadraticCurveTo(zX, zY, zX + radius, zY);
+					ctx.closePath();
+					ctx.clip(); // Mask rendering to only the box area over the template
+
+					// Calculate aspect ratio cover
+					const imgRatio = userPhoto.width / userPhoto.height;
+					const zoneRatio = zW / zH;
+
+					let drawW, drawH;
+					if (imgRatio > zoneRatio) {
+						drawH = zH;
+						drawW = drawH * imgRatio;
+					} else {
+						drawW = zW;
+						drawH = drawW / imgRatio;
+					}
+
+					// Apply user scale
+					drawW *= photoScale;
+					drawH *= photoScale;
+
+					// Centered position + user offset
+					const drawX = zX + (zW - drawW) / 2 + photoOffsetX;
+					const drawY = zY + (zH - drawH) / 2 + photoOffsetY;
+
+					ctx.drawImage(userPhoto, drawX, drawY, drawW, drawH);
+					ctx.restore();
+				}
+
+				// 3. Draw Overlay (Foreground Elements on top of photo)
+				if (overlayLoaded) {
+					ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+				}
+
+				// 4. Draw User Name
+				if (userName.trim()) {
+					const textY = 1270;
+					const centerX = 418;
+					const maxWidth = 447;
+
+					ctx.save();
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+					ctx.fillStyle = nameColor;
+
+					// Auto shrink logic
+					let fontSize = 48;
+					ctx.font = `bold ${fontSize}px 'General Sans', 'Segoe UI', Arial, sans-serif`;
+
+					while (
+						ctx.measureText(userName.toUpperCase()).width > maxWidth &&
+						fontSize > 28
+					) {
+						fontSize--;
+						ctx.font = `bold ${fontSize}px 'General Sans', 'Segoe UI', Arial, sans-serif`;
+					}
+
+					ctx.fillText(userName.toUpperCase(), centerX, textY);
+					ctx.restore();
+				}
+			}
+
+			// Download & Share
+			btnLinkedin.addEventListener("click", () => downloadBadge(true));
+
+			function downloadBadge(shareToLinkedIn) {
+				try {
+					const dataUrl = canvas.toDataURL("image/png", 1.0);
+					const a = document.createElement("a");
+					a.href = dataUrl;
+					const cleanName =
+						userName.trim() ? userName.replace(/\s+/g, "_") : "Guest";
+					a.download = `InternshipExpo_${cleanName}.png`;
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+
+					if (shareToLinkedIn) {
+						const predefinedBio = `🎉 Excited to share my Build With Udyami badge! 🚀
+
+Build With Udyami is a project-centric bootcamp organised by @Udyami Cell GLBITM. It has four tracks: Full Stack, Cybersecurity, AI/ML, and Management & Data Tools.
+
+This bootcamp is all about building real projects in a complete gamified environment rather than just learning like a course.
+
+📌 Get Your Badge Here: https://bwu-badge.internshipexpo.online/
+📝 Register Now: https://linktr.ee/internshipexpo26
+
+#BuildWithUdyami #InternshipExpo #Bootcamp #ProjectBasedLearning #AI #Cybersecurity #FullStack #DataTools`;
+						const badgeUrl = "https://bwu-badge.internshipexpo.online/";
+						const shareUrl =
+							"https://www.linkedin.com/sharing/share-offsite/?url=" +
+							encodeURIComponent(badgeUrl);
+						if (navigator.clipboard?.writeText) {
+							navigator.clipboard.writeText(predefinedBio).then(() => {
+								if (shareNote) {
+									shareNote.textContent =
+										"LinkedIn post text was copied to your clipboard. Paste it into the composer if it is not prefilled.";
+								}
+							}).catch(() => {
+								if (shareNote) {
+									shareNote.textContent =
+										"LinkedIn composer opened. If the message is not prefilled, paste the post text manually.";
+								}
+							});
+						} else if (shareNote) {
+							shareNote.textContent =
+								"LinkedIn composer opened. If the message is not prefilled, paste the post text manually.";
+						}
+						window.open(shareUrl, "_blank");
+					}
+				} catch (e) {
+					alert(
+						"The image couldn't be downloaded due to browser security (CORS). Please run this file locally using a web server like VS Code Live Server.",
+					);
+					console.error(e);
+				}
+			}
+
+			// Initial Render
+			renderCanvas();
+		</script>
+	</body>
+</html>
